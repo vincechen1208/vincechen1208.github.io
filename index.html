@@ -31,30 +31,13 @@
     <p>Instead of building PBD from scratch, we've decided to use the CUDA sample (particles) and build real time 3D liquid simulation. We've implemented a 
     constraint solver based on the algorithms described in [Macklin et al. 2013] to enforce incompressibility. To make the simulation more realistic, we've also resolved
     tensile instability and accounted for vorticity confinement and viscosity. Our next step would be to implement shaders to render different liquid surfaces. Although we 
-    have changed our plans, we are on track to finish everything we originally planned to do, including the aspirations in our proposal. </p>
+    have changed our plans, we are on track to finish everything we originally planned to do, including finishing surface rendering, which was part of our aspirations in our proposal. </p>
     
 
 <h2 align="middle">Preliminary Results</h2>
-    <p>The videos below are simulations with different parameters shown below each video.</p>
+    <p>The videos below are simulations with different parameters shown below each video. For more information on the different parameters, please visit the link below.</p>
 
-    <div align="middle">
-        <table style="width=100%">
-            <tr>
-                <td>
-                    <video align="middle" width="320" height="240" autoplay>
-                        <source src="media2.mp4" type="video/mp4">
-                    </video>
-                    <figcaption align="middle">Rest_density = 20, h = 1.5, Eps = 20000, numIter = 40, No tensile instability, Viscoisty = 0.01, Vorticity = 1</figcaption>
-                </td>
-                 <td>
-                    <video align="middle" width="320" height="240" autoplay>
-                        <source src="media3.mp4" type="video/mp4">
-                    </video>
-                    <figcaption align="middle">Rest_density = 20, h = 1.5, Eps = 10000, numIter = 20, No tensile instability, Viscoisty = 0.01, Vorticity = 1</figcaption>
-                </td>
-            </tr>
-        </table>
-    </div>
+    <a href="https://docs.google.com/presentation/d/1CujIHHSFjB4Twef6u0fv4tn8A6-FRM-Kz4v6CePkSv4/edit#slide=id.g3682ce6fee_0_202">Learn more about the project and different parameters of the videos.</a>
 
     <div align="center">
         <table style="width=100%">
@@ -63,13 +46,13 @@
                     <video align="middle" width="320" height="240" autoplay>
                         <source src="media4.mp4" type="video/mp4">
                     </video>
-                    <figcaption align="middle">Rest_density = 20, h = 1.5, Eps = 5000, numIter = 20, No tensile instability, Viscoisty = 0.0, Vorticity = 0</figcaption>
+                    <figcaption align="middle">No tensile instability, no vorticity</figcaption>
                 </td>
                 <td>
                     <video align="middle" width="320" height="240" autoplay>
                         <source src="media5.mp4" type="video/mp4">
                     </video>
-                    <figcaption align="middle">Rest_density = 20, h = 1.5, Eps = 5000, numIter = 20, No tensile instability, Viscoisty = 0.01, Vorticity = 1</figcaption>
+                    <figcaption align="middle">No tensile instability, with vorticity</figcaption>
                 </td>
             </tr>
         </table>
@@ -82,13 +65,13 @@
                     <video align="middle" width="320" height="240" autoplay>
                         <source src="media6.mp4" type="video/mp4">
                     </video>
-                    <figcaption align="middle">Rest_density = 20, h = 1.5, Eps = 5000, numIter = 20, Tensile instability: Delta_q = 0.01h, k = 0.0003, n = 1, Viscoisty = 0.0, Vorticity = 0</figcaption>
+                    <figcaption align="middle">With tensile instability, no vorticity</figcaption>
                 </td>
                 <td>
                     <video align="middle" width="320" height="240" autoplay>
                         <source src="media7.mp4" type="video/mp4">
                     </video>
-                    <figcaption align="middle">Rest_density = 20, h = 1.5, Eps = 5000, numIter = 20, Tensile instability: Delta_q = 0.01h, k = 0.0003, n = 1, Viscoisty = 0.01, Vorticity = 1</figcaption>
+                    <figcaption align="middle">With both tensile instability and vorticity/figcaption>
                 </td>
             </tr>
         </table>
