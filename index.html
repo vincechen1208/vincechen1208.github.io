@@ -27,11 +27,6 @@
 <h1 align="middle">Final Project: 3D Fluid Simulation</h1>
 <h2 align="middle">Vincent Chen, Sheng-Yu Wang, Haw-Wei Lin</h2>
 
-<br><br>
-
-<div>
-
-
 <h2 align="middle">Updated Plan</h2>
     <p>Instead of building PBD from scratch, we've decided to use the CUDA sample (particles) and build real time 3D liquid simulation. We've implemented a 
     constraint solver based on the algorithms described in [Macklin et al. 2013] to enforce incompressibility. To make the simulation more realistic, we've also resolved
@@ -40,64 +35,60 @@
     
 
 <h2 align="middle">Preliminary Results</h2>
-    <p>By changing the spring constant, k_s, to a very low and very high value, I was able to observe how the stiffness of the spring affects the
-    simulation of the cloth. As below, the picture to the left is simulated with a k_s value of 60000, and the picture to the right is simulated with
-    a k_s value of 20. The stiffer the spring, or the bigger the value of k_s, the less folds we observe in the final simulation of the cloth.</p>
+    <p>The videos below are simulations with different parameters shown below each video.</p>
 
-    <div align="center">
+    <div align="middle">
         <table style="width=100%">
             <tr>
                 <td>
-                    <img src="images/ks60000.png" align="middle" width="400px"/>
-                    <figcaption align="middle">k_s = 60000</figcaption>
+                    <video align="middle" width="320" height="240" autoplay>
+                        <source src="media2.mp4" type="video/mp4">
+                    </video>
+                    <figcaption align="middle">Rest_density = 20, h = 1.5, Eps = 20000, numIter = 40, No tensile instability, Viscoisty = 0.01, Vorticity = 1</figcaption>
                 </td>
-                <td>
-                    <img src="images/ks20.png" align="middle" width="400px"/>
-                    <figcaption align="middle">k_s = 20</figcaption>
+                 <td>
+                    <video align="middle" width="320" height="240" autoplay>
+                        <source src="media3.mp4" type="video/mp4">
+                    </video>
+                    <figcaption align="middle">Rest_density = 20, h = 1.5, Eps = 10000, numIter = 20, No tensile instability, Viscoisty = 0.01, Vorticity = 1</figcaption>
                 </td>
             </tr>
         </table>
     </div>
 
-    <p>By changing the density, I was able to see how heavy the cloth was becoming and how that affected the simulation. The two pictures below are
-    simulated with density values of 5 and 1500, and it is clear that the denser the cloth, the more it stretches and drapes from the two pinned
-    points.</p>
-
     <div align="center">
         <table style="width=100%">
             <tr>
                 <td>
-                    <img src="images/density5.png" align="middle" width="400px"/>
-                    <figcaption align="middle">density = 5</figcaption>
+                    <video align="middle" width="320" height="240" autoplay>
+                        <source src="media4.mp4" type="video/mp4">
+                    </video>
+                    <figcaption align="middle">Rest_density = 20, h = 1.5, Eps = 5000, numIter = 20, No tensile instability, Viscoisty = 0.0, Vorticity = 0</figcaption>
                 </td>
                 <td>
-                    <img src="images/density1500.png" align="middle" width="400px"/>
-                    <figcaption align="middle">density = 1500</figcaption>
+                    <video align="middle" width="320" height="240" autoplay>
+                        <source src="media5.mp4" type="video/mp4">
+                    </video>
+                    <figcaption align="middle">Rest_density = 20, h = 1.5, Eps = 5000, numIter = 20, No tensile instability, Viscoisty = 0.01, Vorticity = 1</figcaption>
                 </td>
             </tr>
         </table>
     </div>
 
-    <p>Lastly, by changing the damping value, I was able to observe that the lower the damping value, the bouncier the cloth is. Below are two
-    screenshots of the cloth with damping at 1.0% and another at 0.02%. The one on the right is clearly stiffer and not as bouncy or soft as a cloth
-    should be. The one on the left is too bouncy and soft for a regular cloth. I've also included a shaded version of pinned4.json below.</p>
-
     <div align="center">
         <table style="width=100%">
             <tr>
                 <td>
-                    <img src="images/damping002.png" align="middle" width="400px"/>
-                    <figcaption align="middle">damping = 0.02%</figcaption>
+                    <video align="middle" width="320" height="240" autoplay>
+                        <source src="media6.mp4" type="video/mp4">
+                    </video>
+                    <figcaption align="middle">Rest_density = 20, h = 1.5, Eps = 5000, numIter = 20, Tensile instability: Delta_q = 0.01h, k = 0.0003, n = 1, Viscoisty = 0.0, Vorticity = 0</figcaption>
                 </td>
                 <td>
-                    <img src="images/damping1.png" align="middle" width="400px"/>
-                    <figcaption align="middle">damping = 1.0%</figcaption>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <img src="images/pinned4.png" align="middle" width="400px"/>
-                    <figcaption align="middle">pinned4.json shaded</figcaption>
+                    <video align="middle" width="320" height="240" autoplay>
+                        <source src="media7.mp4" type="video/mp4">
+                    </video>
+                    <figcaption align="middle">Rest_density = 20, h = 1.5, Eps = 5000, numIter = 20, Tensile instability: Delta_q = 0.01h, k = 0.0003, n = 1, Viscoisty = 0.01, Vorticity = 1</figcaption>
                 </td>
             </tr>
         </table>
