@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>
+  body {
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+</style>
+<title>CS 184 Final Project</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+<body>
+
+<h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2018</h1>
+<h1 align="middle">Final Project: 3D Fluid Simulation</h1>
+<h2 align="middle">Vincent Chen, Sheng-Yu Wang, Haw-Wei Lin</h2>
+
+<br><br>
+
+<div>
+
+
+<h2 align="middle">Updated Plan</h2>
+    <p>Instead of building PBD from scratch, we've decided to use the CUDA sample (particles) and build real time 3D liquid simulation. We've implemented a 
+    constraint solver based on the algorithms described in [Macklin et al. 2013] to enforce incompressibility. To make the simulation more realistic, we've also resolved
+    tensile instability and accounted for vorticity confinement and viscosity. Our next step would be to implement shaders to render different liquid surfaces. Although we 
+    have changed our plans, we are on track to finish everything we originally planned to do, including the aspirations in our proposal. </p>
+    
+
+<h2 align="middle">Preliminary Results</h2>
+    <p>By changing the spring constant, k_s, to a very low and very high value, I was able to observe how the stiffness of the spring affects the
+    simulation of the cloth. As below, the picture to the left is simulated with a k_s value of 60000, and the picture to the right is simulated with
+    a k_s value of 20. The stiffer the spring, or the bigger the value of k_s, the less folds we observe in the final simulation of the cloth.</p>
+
+    <div align="center">
+        <table style="width=100%">
+            <tr>
+                <td>
+                    <img src="images/ks60000.png" align="middle" width="400px"/>
+                    <figcaption align="middle">k_s = 60000</figcaption>
+                </td>
+                <td>
+                    <img src="images/ks20.png" align="middle" width="400px"/>
+                    <figcaption align="middle">k_s = 20</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <p>By changing the density, I was able to see how heavy the cloth was becoming and how that affected the simulation. The two pictures below are
+    simulated with density values of 5 and 1500, and it is clear that the denser the cloth, the more it stretches and drapes from the two pinned
+    points.</p>
+
+    <div align="center">
+        <table style="width=100%">
+            <tr>
+                <td>
+                    <img src="images/density5.png" align="middle" width="400px"/>
+                    <figcaption align="middle">density = 5</figcaption>
+                </td>
+                <td>
+                    <img src="images/density1500.png" align="middle" width="400px"/>
+                    <figcaption align="middle">density = 1500</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <p>Lastly, by changing the damping value, I was able to observe that the lower the damping value, the bouncier the cloth is. Below are two
+    screenshots of the cloth with damping at 1.0% and another at 0.02%. The one on the right is clearly stiffer and not as bouncy or soft as a cloth
+    should be. The one on the left is too bouncy and soft for a regular cloth. I've also included a shaded version of pinned4.json below.</p>
+
+    <div align="center">
+        <table style="width=100%">
+            <tr>
+                <td>
+                    <img src="images/damping002.png" align="middle" width="400px"/>
+                    <figcaption align="middle">damping = 0.02%</figcaption>
+                </td>
+                <td>
+                    <img src="images/damping1.png" align="middle" width="400px"/>
+                    <figcaption align="middle">damping = 1.0%</figcaption>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img src="images/pinned4.png" align="middle" width="400px"/>
+                    <figcaption align="middle">pinned4.json shaded</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
