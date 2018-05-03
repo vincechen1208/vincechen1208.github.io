@@ -27,33 +27,44 @@
 <h1 align="middle">Final Project: 3D Fluid Simulation</h1>
 <h2 align="middle">Vincent Chen, Sheng-Yu Wang, Haw-Wei Lin</h2>
 
-<h2 align="middle">Updated Plan</h2>
-    <p>Instead of building PBD from scratch, we've decided to use the CUDA sample (particles) and build real time 3D liquid simulation. We've implemented a 
-    constraint solver based on the algorithms described in [Macklin et al. 2013] to enforce incompressibility. To make the simulation more realistic, we've also resolved
-    tensile instability and accounted for vorticity confinement and viscosity. Our next step would be to implement shaders to render different liquid surfaces. Although we 
-    have changed our plans, we are on track to finish everything we originally planned to do, including finishing surface rendering, which was part of our aspirations in our proposal. </p>
+
+ <div align="center">
+        <table style="width=100%">
+            <tr>
+                <td>
+                    <video align="middle" width="320" height="240" autoplay>
+                        <source src="media7.mp4" type="video/mp4">
+                    </video>
+                    <figcaption align="middle">3D Real-Time Fluid Simulation</figcaption>
+                </td>
+            </tr>
+        </table>
+ </div>
+
+<h2 align="middle">Abstract</h2>
+    <p>For our final project, we've chosen to implement 3D real-time fluid simulation by treating fluid as a huge set of particles that interact with each other and move at various velocities. We started off with the "particles" CUDA sample, where only particle collisions are handled. In order to simulate fluid-like motion within the particles, we implemented methods described in [Macklin et al. 2013] to enforce incompressibility. We also handled tensile instability, and enforced other constraints such as vorticity and viscosity. We implemented these methods in CUDA for real-time effects. Finally, we attemped surface rendering in order to make the particles look more like a liquid.</p>
     
 
-<h2 align="middle">Preliminary Results</h2>
+<h2 align="middle">Technical Approach</h2>
     <p>The videos below are simulations with different parameters shown below each video. For more information on the different parameters, please visit the link below.</p>
 
     <a href="https://docs.google.com/presentation/d/1CujIHHSFjB4Twef6u0fv4tn8A6-FRM-Kz4v6CePkSv4/edit?usp=sharing">Learn more about the project and different parameters of the videos.</a>
-    
 
-    <div align="center">
+<h2 align="middle">Results</h2>
+	<div align="center">
         <table style="width=100%">
             <tr>
                 <td>
                     <video align="middle" width="320" height="240" autoplay>
                         <source src="media4.mp4" type="video/mp4">
                     </video>
-                    <figcaption align="middle">No tensile instability, no vorticity</figcaption>
+                    <figcaption align="middle">No tensile instability, no vorticity, no viscosity</figcaption>
                 </td>
                 <td>
                     <video align="middle" width="320" height="240" autoplay>
-                        <source src="media5.mp4" type="video/mp4">
+                        <source src="media6.mp4" type="video/mp4">
                     </video>
-                    <figcaption align="middle">No tensile instability, with vorticity</figcaption>
+                    <figcaption align="middle">With tensile instability, no vorticity, no viscosity</figcaption>
                 </td>
             </tr>
         </table>
@@ -66,16 +77,28 @@
                     <video align="middle" width="320" height="240" autoplay>
                         <source src="media6.mp4" type="video/mp4">
                     </video>
-                    <figcaption align="middle">With tensile instability, no vorticity</figcaption>
+                    <figcaption align="middle">No tensile instability, with vorticity and viscosity</figcaption>
                 </td>
                 <td>
                     <video align="middle" width="320" height="240" autoplay>
                         <source src="media7.mp4" type="video/mp4">
                     </video>
-                    <figcaption align="middle">With both tensile instability and vorticity</figcaption>
+                    <figcaption align="middle">With tensile instability, vorticity, and viscosity</figcaption>
                 </td>
             </tr>
         </table>
     </div>
+<h2 align="middle">References</h2>
+	<ul>
+  		<li>Miles Macklin and Matthias Müller. Position based fluids. ACM Trans.Graph., 32(4):104:1–104:12, July 2013.</li>
+  		<li>Matthias Müller, David Charypar, and Markus Gross. Particle-based fluid simulation for interactive applications. In Proceedings of the 2003 ACM SIGGRAPH/Eurographics Symposium on Computer Animation, SCA ’03, pages 154–159, Aire-la-Ville, Switzerland, Switzerland, 2003. Eurographics Association</li>
+	</ul> 
+<h2 align="middle">Contributions</h2>
+	<ul>
+		<li> Haw-Wei Lin: </li>
+		<li> Sheng-Yu Wang: </li>
+		<li> Vincent Chen: </li>
+	</ul>	
+
 </body>
 </html>
