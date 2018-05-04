@@ -1,0 +1,31 @@
+<h2 align="middle">Rendering</h2>
+<p>The starter code "particles" from CUDA samples implements the basic rendering of each particle as a diffuse surface of some defined color with a fix light source. Depth test was handled by the opengl library. Particle appearance was by default a gradient of rainbow colors. Mouse drag events rotate the scene around, which is rendered using a lookat matrix transform followed by a projection transform to 2D screen. </p>
+
+<p>Surface reconstruction of particle based dynamical systems are difficult because there are no naturally existing surfaces or meshes to use for rendering. We attempted to implement the approach described in the talk given by Simon Green (NVIDIA) at the Game Developers Conference in 2010, titled "Screen Space Fluid Rendering for Games". The advantage of this method is that only the surface closest to the camera is rendered by construction of the depth image, which significantly reduces computation cost and works well for real time applications. The high level overview of the algorithm is as follows: </p>
+
+<pre>
+  <code>
+    1. Generate and render depth image of particles as point sprites.
+    2. Smooth depth image (with Gaussian blur or bilateral filter).
+    3. Calculate surface normals and positions from depth.
+    4. Shade surface (Bling Phong or Fresnel equation plus reflection).
+    5. Account for thickness (volumetric absorption, described by Beer's law).
+  </code>
+</pre>
+
+<p> The depth image can easily be rendered using by calculating the depth of each particle in the pixel shader. Shown below is the dam break scene rendered with the depth image (100k particles, real time screen capture): </p>
+
+	<div align="center">
+    	<table style="width=100%">
+            <tr>
+                <td>
+                    <video align="middle" width="320" height="240" controls loop>
+                        <source src="No audio/media16.mp4" type="video/mp4">
+                    </video>
+                    <figcaption align="middle">Depth image of dam break scene</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+<p> Unfortuantely, attempts to render the blurred depth image fell short and we were unable to continue on the later steps of shading the surface and accounting for thickness to render a realistic fluid surface. The main difficulty of debugging the vertex and pixel shaders was that it was difficult to determine whether the root cause of a bug was within the shaders or with how the blurred output was displayed on screen. </p>
