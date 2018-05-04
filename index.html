@@ -32,7 +32,7 @@
         <table style="width=100%">
             <tr>
                 <td>
-                    <video align="middle" width="320" height="240" autoplay>
+                    <video align="middle" width="320" height="240" controls loop>
                         <source src="media7.mp4" type="video/mp4">
                     </video>
                     <figcaption align="middle">3D Real-Time Fluid Simulation</figcaption>
@@ -51,39 +51,76 @@
     <a href="https://docs.google.com/presentation/d/1CujIHHSFjB4Twef6u0fv4tn8A6-FRM-Kz4v6CePkSv4/edit?usp=sharing">Learn more about the project and different parameters of the videos.</a>
 
 <h2 align="middle">Results</h2>
+	<h3 align="middle"> No tensile instability, no vorticity, no viscosity, Rest_density = 20, h = 2.0 </h3>
 	<div align="center">
         <table style="width=100%">
             <tr>
                 <td>
-                    <video align="middle" width="320" height="240" autoplay>
-                        <source src="media4.mp4" type="video/mp4">
+                    <video align="middle" width="320" height="240" controls loop>
+                        <source src="media10.mp4" type="video/mp4">
                     </video>
-                    <figcaption align="middle">No tensile instability, no vorticity, no viscosity</figcaption>
+                    <figcaption align="middle">Eps = 5000</figcaption>
                 </td>
                 <td>
-                    <video align="middle" width="320" height="240" autoplay>
-                        <source src="media6.mp4" type="video/mp4">
+                    <video align="middle" width="320" height="240" controls loop>
+                        <source src="media11.mp4" type="video/mp4">
                     </video>
-                    <figcaption align="middle">With tensile instability, no vorticity, no viscosity</figcaption>
+                    <figcaption align="middle">Eps = 50000</figcaption>
                 </td>
             </tr>
         </table>
     </div>
 
+    <h3 align="middle"> No vorticity, no viscosity, Rest_density = 20, h = 1.5, Eps = 5000 </h3>
     <div align="center">
         <table style="width=100%">
             <tr>
                 <td>
-                    <video align="middle" width="320" height="240" autoplay>
-                        <source src="media6.mp4" type="video/mp4">
+                    <video align="middle" width="320" height="240" controls loop>
+                        <source src="media5.mp4" type="video/mp4">
                     </video>
-                    <figcaption align="middle">No tensile instability, with vorticity and viscosity</figcaption>
+                    <figcaption align="middle">No tensile instability</figcaption>
                 </td>
                 <td>
-                    <video align="middle" width="320" height="240" autoplay>
+                    <video align="middle" width="320" height="240" controls loop>
                         <source src="media7.mp4" type="video/mp4">
                     </video>
-                    <figcaption align="middle">With tensile instability, vorticity, and viscosity</figcaption>
+                    <figcaption align="middle">
+                    	Tensile Instability: Delta_q = 0.01h, k = 0.0003, n = 1 	
+                    </figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <h3 align="middle"> With tensile instability, Rest_density = 20, h = 1.5, Eps = 5000 </h3>
+    <div align="center">
+        <table style="width=100%">
+            <tr>
+                <td>
+                    <video align="middle" width="320" height="240" controls loop>
+                        <source src="media6.mp4" type="video/mp4">
+                    </video>
+                    <figcaption align="middle">No vorticity, no viscosity</figcaption>
+                </td>
+                <td>
+                    <video align="middle" width="320" height="240" controls loop>
+                        <source src="media7.mp4" type="video/mp4">
+                    </video>
+                    <figcaption align="middle">With vorticity and viscosity</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <h3 align="middle"> Final Simulation with 100k particles </h3>
+    <div align="center">
+        <table style="width=100%">
+            <tr>
+                <td>
+                    <video align="middle" width="320" height="240" controls loop>
+                        <source src="media14.mp4" type="video/mp4">
+                    </video>
                 </td>
             </tr>
         </table>
