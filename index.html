@@ -32,7 +32,7 @@
         <table style="width=100%">
             <tr>
                 <td>
-                    <video align="middle" width="400" height="600" controls loop>
+                    <video align="middle" width="480" height="400" controls loop>
                         <source src="muted/media7.mp4" type="video/mp4">
                     </video>
                     <figcaption align="middle">3D Real-Time Fluid Simulation</figcaption>
@@ -90,19 +90,51 @@
 
     <img src="image/visc-1.png" width="360px" align="middle" />
 
+<h2 align="middle">Rendering</h2>
+<p>The starter code "particles" from CUDA samples implements the basic rendering of each particle as a diffuse surface of some defined color with a fix light source. Depth test was handled by the opengl library. Particle appearance was by default a gradient of rainbow colors. Mouse drag events rotate the scene around, which is rendered using a lookat matrix transform followed by a projection transform to 2D screen. </p>
+
+<p>Surface reconstruction of particle based dynamical systems are difficult because there are no naturally existing surfaces or meshes to use for rendering. We attempted to implement the approach described in the talk given by Simon Green (NVIDIA) at the Game Developers Conference in 2010, titled "Screen Space Fluid Rendering for Games". The advantage of this method is that only the surface closest to the camera is rendered by construction of the depth image, which significantly reduces computation cost and works well for real time applications. The high level overview of the algorithm is as follows: </p>
+
+<pre>
+  <code>
+    1. Generate and render depth image of particles as point sprites.
+    2. Smooth depth image (with Gaussian blur or bilateral filter).
+    3. Calculate surface normals and positions from depth.
+    4. Shade surface (Bling Phong or Fresnel equation plus reflection).
+    5. Account for thickness (volumetric absorption, described by Beer's law).
+  </code>
+</pre>
+
+<p> The depth image can easily be rendered using by calculating the depth of each particle in the pixel shader. Shown below is the dam break scene rendered with the depth image (100k particles, real time screen capture): </p>
+
+	<div align="center">
+    	<table style="width=100%">
+            <tr>
+                <td>
+                    <video align="middle" width="480" height="400" controls loop>
+                        <source src="muted/media16.mp4" type="video/mp4">
+                    </video>
+                    <figcaption align="middle">Depth image of dam break scene</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+<p> Unfortuantely, attempts to render the blurred depth image fell short and we were unable to continue on the later steps of shading the surface and accounting for thickness to render a realistic fluid surface. The main difficulty of debugging the vertex and pixel shaders was that it was difficult to determine whether the root cause of a bug was within the shaders or with how the blurred output was displayed on screen. </p>
+
 <h2 align="middle">Results</h2>
 	<h3 align="middle"> No tensile instability, no vorticity, no viscosity, Rest_density = 20, h = 2.0 </h3>
 	<div align="center">
         <table style="width=100%">
             <tr>
                 <td>
-                    <video align="middle" width="400" height="600" controls loop>
+                    <video align="middle" width="480" height="400" controls loop>
                         <source src="muted/media10.mp4" type="video/mp4">
                     </video>
                     <figcaption align="middle">Eps = 5000</figcaption>
                 </td>
                 <td>
-                    <video align="middle" width="400" height="600" controls loop>
+                    <video align="middle" width="480" height="400" controls loop>
                         <source src="muted/media11.mp4" type="video/mp4">
                     </video>
                     <figcaption align="middle">Eps = 50000</figcaption>
@@ -116,13 +148,13 @@
         <table style="width=100%">
             <tr>
                 <td>
-                    <video align="middle" width="400" height="600" controls loop>
+                    <video align="middle" width="480" height="400" controls loop>
                         <source src="muted/media5.mp4" type="video/mp4">
                     </video>
                     <figcaption align="middle">No tensile instability</figcaption>
                 </td>
                 <td>
-                    <video align="middle" width="400" height="600" controls loop>
+                    <video align="middle" width="480" height="400" controls loop>
                         <source src="muted/media7.mp4" type="video/mp4">
                     </video>
                     <figcaption align="middle">
@@ -138,13 +170,13 @@
         <table style="width=100%">
             <tr>
                 <td>
-                    <video align="middle" width="400" height="600"controls loop>
+                    <video align="middle" width="480" height="400" controls loop>
                         <source src="muted/media6.mp4" type="video/mp4">
                     </video>
                     <figcaption align="middle">No vorticity, no viscosity</figcaption>
                 </td>
                 <td>
-                    <video align="middle" width="400" height="600" controls loop>
+                    <video align="middle" width="480" height="400" controls loop>
                         <source src="muted/media7.mp4" type="video/mp4">
                     </video>
                     <figcaption align="middle">With vorticity and viscosity</figcaption>
@@ -158,13 +190,18 @@
         <table style="width=100%">
             <tr>
                 <td>
-                    <video align="middle" width="400" height="600" controls loop>
+                    <video align="middle" width="480" height="400" controls loop>
                         <source src="muted/media14.mp4" type="video/mp4">
                     </video>
                 </td>
             </tr>
         </table>
     </div>
+
+<h2>Challenges</h2>
+
+<h2>Lessons Learned</h2>
+    
 <h2 align="middle">References</h2>
 	<ul>
   		<li>Miles Macklin and Matthias Müller. Position based fluids. ACM Trans.Graph., 32(4):104:1–104:12, July 2013.</li>
