@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>
+  body {
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+</style>
+<title>CS 184 Final Project</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+
+<body>
+
+<h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2018</h1>
+<h1 align="middle">Final Project: 3D Fluid Simulation</h1>
+<h2 align="middle">Vincent Chen, Sheng-Yu Wang, Haw-Wei Lin</h2>
+
+
+ <div align="center">
+        <table style="width=100%">
+            <tr>
+                <td>
+                    <video align="middle" width="320" height="240" autoplay>
+                        <source src="media7.mp4" type="video/mp4">
+                    </video>
+                    <figcaption align="middle">3D Real-Time Fluid Simulation</figcaption>
+                </td>
+            </tr>
+        </table>
+ </div>
+
+<h2 align="middle">Abstract</h2>
+    <p>For our final project, we've chosen to implement 3D real-time fluid simulation by treating fluid as a huge set of particles that interact with each other and move at various velocities. We started off with the "particles" CUDA sample, where only particle collisions are handled. In order to simulate fluid-like motion within the particles, we implemented methods described in [Macklin et al. 2013] to enforce incompressibility. We also handled tensile instability, and enforced other constraints such as vorticity and viscosity. We implemented these methods in CUDA for real-time effects. Finally, we attemped surface rendering in order to make the particles look more like a liquid.</p>
+    
+
+<h2 align="middle">Technical Approach</h2>
+    <h3>Full Pipeline</h3>
+    <img src="image/alg.png" width="400px" align="middle" /> 
+    <h3>Incompressibility</h3>
+    <p>Instead of doing a physical calculation for the intermolecular attraction and repulsion. Here we adopted the constraint method to simulate a non-physical but realistic incompressibility effect. To formulate the constraint, we can leverage the fact that incompressibility implies constant local densities. First, we calculate the local densities for each particle in our scene, where particle <i><b>i</b></i> has a local density <i><b>ρi</b></i> approximated by the following: <br>
+        <img src="image/comp-1.png" width="200px" align="middle" />, where <i><b>ρ0</b></i> is the rest density we define. <br>
+
+    With this approximation, we can set up a state function: <br>
+        <img src="image/comp-0.png" width="200px" align="middle" /> <br>
+    In order to enforce constant density, we would want the state function to be <i><b>0</b></i>. <br>
+    Therefore, given position <i><b>p</b></i> after a Euler update, one need to add a small modification <i><b>Δp</b></i> so that: <br>
+        <img src="image/comp-2.png" width="120px" align="middle" /> <br>
+    By doing a taylor expansion and adding a relaxation term <b>𝜀</b>, we get the following solutions for <i><b>Δp</b></i>: <br>
+        <img src="image/comp-3.png" width="200px" align="middle" />, 
+        <img src="image/comp-4.png" width="300px" align="middle" /> <br>
+    The relaxation term <b>𝜀</b> acts as a crutial factor to regularize the contraint correction in order to stabilize the dynamics. <br>
+    Also, for each frame, incompressibility contraint update and collision update will be applied for a couple of iterations in order to have a more stable motion.</p>
+
+
+    <h3>Kernel functions</h3>
+    <p>Recall that for approximating local density, we uses a function <i><b>W</b></i>. This is the kernel function that give weights according to the distance. Intuitively, we would like to assign a higher density contribution to particles that are close, and the kernel function basically does this thing. <br>
+    Empirically, we uses poly6 kernel to approximate the local densities, and spiky kernel to calculate the gradients. The two functions are as follows: <br>
+        <img src="image/kernel_poly6.png" width="360px" align="middle" />,  
+        <img src="image/kernel_spiky.png" width="360px" align="middle" /> <br></p>
+
+    <h3>Tensile Instability</h3>
+    <p> Vincent </p>
+
+    <h3>Vorticity Confinement</h3>
+    <p>Applying constraints are not physical, and unfortunately in this case our implementation will dissipate considerable energy. This generates a undesirable effect where the fluids are not moving enough. In order to add the energy back, we reinforce the local vorticity of the fluid. First, we calculate the current approximate of the local vorticity given as follows: <br>
+        <img src="image/vort-0.png" width="300px" align="middle" />, which is the curl of the velocity vector field weighted by the kernel function. <br>
+    Afterwards, we apply the additional vorticity force to the particle to enhance the local spinning motion. The force is calculated by: <br>
+        <img src="image/vort-1.png" width="150px" align="middle" />, <br> where <i><b>N</b></i> is the normalized position of the particle with respect to local center of mass, and <b>𝜀</b> determines how much vorticity we are adding back to the fluid.</p>
+
+    <h3>Viscosity</h3>
+    <p> Vincent </p>
+
+    <h3>Challenge</h3>
+    <p> stuff </p>
+
+    <h3>Lesson Learned</h3>
+    <p> </p>
+
+    <p>The videos below are simulations with different parameters shown below each video. For more information on the different parameters, please visit the link below.</p>
+
+    <a href="https://docs.google.com/presentation/d/1CujIHHSFjB4Twef6u0fv4tn8A6-FRM-Kz4v6CePkSv4/edit?usp=sharing">Learn more about the project and different parameters of the videos.</a>
+
+<h2 align="middle">Results</h2>
+	<div align="center">
+        <table style="width=100%">
+            <tr>
+                <td>
+                    <video align="middle" width="320" height="240" autoplay>
+                        <source src="media4.mp4" type="video/mp4">
+                    </video>
+                    <figcaption align="middle">No tensile instability, no vorticity, no viscosity</figcaption>
+                </td>
+                <td>
+                    <video align="middle" width="320" height="240" autoplay>
+                        <source src="media6.mp4" type="video/mp4">
+                    </video>
+                    <figcaption align="middle">With tensile instability, no vorticity, no viscosity</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div align="center">
+        <table style="width=100%">
+            <tr>
+                <td>
+                    <video align="middle" width="320" height="240" autoplay>
+                        <source src="media6.mp4" type="video/mp4">
+                    </video>
+                    <figcaption align="middle">No tensile instability, with vorticity and viscosity</figcaption>
+                </td>
+                <td>
+                    <video align="middle" width="320" height="240" autoplay>
+                        <source src="media7.mp4" type="video/mp4">
+                    </video>
+                    <figcaption align="middle">With tensile instability, vorticity, and viscosity</figcaption>
+                </td>
+            </tr>
+        </table>
+    </div>
+<h2 align="middle">References</h2>
+	<ul>
+  		<li>Miles Macklin and Matthias Müller. Position based fluids. ACM Trans.Graph., 32(4):104:1–104:12, July 2013.</li>
+  		<li>Matthias Müller, David Charypar, and Markus Gross. Particle-based fluid simulation for interactive applications. In Proceedings of the 2003 ACM SIGGRAPH/Eurographics Symposium on Computer Animation, SCA ’03, pages 154–159, Aire-la-Ville, Switzerland, Switzerland, 2003. Eurographics Association</li>
+	</ul> 
+<h2 align="middle">Contributions</h2>
+	<ul>
+		<li> Haw-Wei Lin: </li>
+		<li> Sheng-Yu Wang: </li>
+		<li> Vincent Chen: </li>
+	</ul>	
+
+</body>
+</html>

@@ -32,8 +32,8 @@
         <table style="width=100%">
             <tr>
                 <td>
-                    <video align="middle" width="320" height="240" controls loop>
-                        <source src="media7.mp4" type="video/mp4">
+                    <video align="middle" width="400" height="600" controls loop>
+                        <source src="muted/media7.mp4" type="video/mp4">
                     </video>
                     <figcaption align="middle">3D Real-Time Fluid Simulation</figcaption>
                 </td>
@@ -46,9 +46,49 @@
     
 
 <h2 align="middle">Technical Approach</h2>
-    <p>The videos below are simulations with different parameters shown below each video. For more information on the different parameters, please visit the link below.</p>
 
-    <a href="https://docs.google.com/presentation/d/1CujIHHSFjB4Twef6u0fv4tn8A6-FRM-Kz4v6CePkSv4/edit?usp=sharing">Learn more about the project and different parameters of the videos.</a>
+	<h3>Full Pipeline</h3>
+    <img src="image/alg.png" width="400px" align="middle" /> 
+    <h3>Incompressibility</h3>
+    <p>Instead of doing a physical calculation for the intermolecular attraction and repulsion. Here we adopted the constraint method to simulate a non-physical but realistic incompressibility effect. To formulate the constraint, we can leverage the fact that incompressibility implies constant local densities. First, we calculate the local densities for each particle in our scene, where particle <i><b>i</b></i> has a local density <i><b>ρi</b></i> approximated by the following: <br>
+        <img src="image/comp-1.png" width="200px" align="middle" />, where <i><b>ρ0</b></i> is the rest density we define. <br>
+
+    With this approximation, we can set up a state function: <br>
+        <img src="image/comp-0.png" width="200px" align="middle" /> <br>
+    In order to enforce constant density, we would want the state function to be <i><b>0</b></i>. <br>
+    Therefore, given position <i><b>p</b></i> after a Euler update, one need to add a small modification <i><b>Δp</b></i> so that: <br>
+        <img src="image/comp-2.png" width="120px" align="middle" /> <br>
+    By doing a taylor expansion and adding a relaxation term <b>𝜀</b>, we get the following solutions for <i><b>Δp</b></i>: <br>
+        <img src="image/comp-3.png" width="200px" align="middle" />, 
+        <img src="image/comp-4.png" width="300px" align="middle" /> <br>
+    The relaxation term <b>𝜀</b> acts as a crutial factor to regularize the contraint correction in order to stabilize the dynamics. <br>
+    Also, for each frame, incompressibility contraint update and collision update will be applied for a couple of iterations in order to have a more stable motion.</p>
+
+
+    <h3>Kernel functions</h3>
+    <p>Recall that for approximating local density, we uses a function <i><b>W</b></i>. This is the kernel function that give weights according to the distance. Intuitively, we would like to assign a higher density contribution to particles that are close, and the kernel function basically does this thing. <br>
+    Empirically, we uses poly6 kernel to approximate the local densities, and spiky kernel to calculate the gradients. The two functions are as follows: <br>
+        <img src="image/kernel_poly6.png" width="360px" align="middle" />,  
+        <img src="image/kernel_spiky.png" width="360px" align="middle" /> <br></p>
+
+	<h3>Tensile Instability</h3>
+	<p>One of the biggest problems we ran into when doing this project was that some particles were affected by negative pressure and tended to clump and cluster together. We then realized that when a particle has too few neighbors and therefore does not satisfy the rest density, it will lead to the clustering and clumping of surrounding particles. This phenomenon is known as tensile instability. In order to solve tensile instability, we implemented the method by Monaghan described in [Macklin et al. 2013]. Following the steps, we added in a correction term when updating the positions of each particle to act as an "artificial pressure" in order to push the clustered particles apart. The correction term is iteself specified in terms of the smoothing kernel we used above for incompressibility and is shown below. The updated position-updated equation is also shown below.</p>
+
+	<img src="image/tensile-1.png" width="300px" align="middle" /> <br>
+	<img src="image/tensile-2.png" width="360px" align="middle" />
+
+	<p>In the above equation, ∆q is a random fixed distance within the smoothing kernel radius and k is a small constant. We've fine-tuned these parameters to produce the best visual effects. Since the constant k is purely negative, the above correction term is a purely repulsive force. As a result, each particle now pulls their neighboring particles inward, creating a surface-tension like effect, which further makes the simulation behave more like an actual fluid.</p>
+
+	<h3>Vorticity Confinement</h3>
+    <p>Applying constraints are not physical, and unfortunately in this case our implementation will dissipate considerable energy. This generates a undesirable effect where the fluids are not moving enough. In order to add the energy back, we reinforce the local vorticity of the fluid. First, we calculate the current approximate of the local vorticity given as follows: <br>
+        <img src="image/vort-0.png" width="300px" align="middle" />, which is the curl of the velocity vector field weighted by the kernel function. <br>
+    Afterwards, we apply the additional vorticity force to the particle to enhance the local spinning motion. The force is calculated by: <br>
+        <img src="image/vort-1.png" width="150px" align="middle" />, <br> where <i><b>N</b></i> is the normalized position of the particle with respect to local center of mass, and <b>𝜀</b> determines how much vorticity we are adding back to the fluid.</p>
+
+    <h3>Viscosity</h3>
+    <p>In order to make the particles look even more like a fluid, or more "viscouse", we apply some damping to "stick" the particles together. We update the velocity equation to include this damping term, which is important for coherent motion among the particles. We fine-tune the constant c to produce the best visual results. The updated velocity equation is shown below.</p>
+
+    <img src="image/visc-1.png" width="360px" align="middle" />
 
 <h2 align="middle">Results</h2>
 	<h3 align="middle"> No tensile instability, no vorticity, no viscosity, Rest_density = 20, h = 2.0 </h3>
@@ -56,14 +96,14 @@
         <table style="width=100%">
             <tr>
                 <td>
-                    <video align="middle" width="320" height="240" controls loop>
-                        <source src="media10.mp4" type="video/mp4">
+                    <video align="middle" width="400" height="600" controls loop>
+                        <source src="muted/media10.mp4" type="video/mp4">
                     </video>
                     <figcaption align="middle">Eps = 5000</figcaption>
                 </td>
                 <td>
-                    <video align="middle" width="320" height="240" controls loop>
-                        <source src="media11.mp4" type="video/mp4">
+                    <video align="middle" width="400" height="600" controls loop>
+                        <source src="muted/media11.mp4" type="video/mp4">
                     </video>
                     <figcaption align="middle">Eps = 50000</figcaption>
                 </td>
@@ -76,14 +116,14 @@
         <table style="width=100%">
             <tr>
                 <td>
-                    <video align="middle" width="320" height="240" controls loop>
-                        <source src="media5.mp4" type="video/mp4">
+                    <video align="middle" width="400" height="600" controls loop>
+                        <source src="muted/media5.mp4" type="video/mp4">
                     </video>
                     <figcaption align="middle">No tensile instability</figcaption>
                 </td>
                 <td>
-                    <video align="middle" width="320" height="240" controls loop>
-                        <source src="media7.mp4" type="video/mp4">
+                    <video align="middle" width="400" height="600" controls loop>
+                        <source src="muted/media7.mp4" type="video/mp4">
                     </video>
                     <figcaption align="middle">
                     	Tensile Instability: Delta_q = 0.01h, k = 0.0003, n = 1 	
@@ -98,14 +138,14 @@
         <table style="width=100%">
             <tr>
                 <td>
-                    <video align="middle" width="320" height="240" controls loop>
-                        <source src="media6.mp4" type="video/mp4">
+                    <video align="middle" width="400" height="600"controls loop>
+                        <source src="muted/media6.mp4" type="video/mp4">
                     </video>
                     <figcaption align="middle">No vorticity, no viscosity</figcaption>
                 </td>
                 <td>
-                    <video align="middle" width="320" height="240" controls loop>
-                        <source src="media7.mp4" type="video/mp4">
+                    <video align="middle" width="400" height="600" controls loop>
+                        <source src="muted/media7.mp4" type="video/mp4">
                     </video>
                     <figcaption align="middle">With vorticity and viscosity</figcaption>
                 </td>
@@ -118,8 +158,8 @@
         <table style="width=100%">
             <tr>
                 <td>
-                    <video align="middle" width="320" height="240" controls loop>
-                        <source src="media14.mp4" type="video/mp4">
+                    <video align="middle" width="400" height="600" controls loop>
+                        <source src="muted/media14.mp4" type="video/mp4">
                     </video>
                 </td>
             </tr>
