@@ -90,7 +90,7 @@
 
     <img src="image/visc-1.png" width="360px" align="middle" />
 
-<h2 align="middle">Rendering</h2>
+<h3>Rendering</h3>
 <p>The starter code "particles" from CUDA samples implements the basic rendering of each particle as a diffuse surface of some defined color with a fix light source. Depth test was handled by the opengl library. Particle appearance was by default a gradient of rainbow colors. Mouse drag events rotate the scene around, which is rendered using a lookat matrix transform followed by a projection transform to 2D screen. </p>
 
 <p>Surface reconstruction of particle based dynamical systems are difficult because there are no naturally existing surfaces or meshes to use for rendering. We attempted to implement the approach described in the talk given by Simon Green (NVIDIA) at the Game Developers Conference in 2010, titled "Screen Space Fluid Rendering for Games". The advantage of this method is that only the surface closest to the camera is rendered by construction of the depth image, which significantly reduces computation cost and works well for real time applications. The high level overview of the algorithm is as follows: </p>
@@ -199,8 +199,15 @@
     </div>
 
 <h2>Challenges</h2>
+<p>One of our major challenges in this project was debugging the CUDA code. Cuda device functions (functions with __device__ header) 
+were executed only in the gpu, and we were not able to print out variables in device functions. This causes some trouble to debug. 
+Thankfully, it is possible to actually use a pointer to store the variable and print it out in the host functions. After knowing that, 
+our debug process went much smoother.</p>
 
 <h2>Lessons Learned</h2>
+<p>The most important lesson we learned was probably the power of parallel processing on GPU. Simulating 3D point based fluids is definitely
+a hard task computational-wise. However, we're able to parallelize the dynamics calculation for each particle and achieve real-time simulation.
+This is super cool! After this project, we will definitely cherish a GPU much more when playing games.</p>
 
 <h2 align="middle">References</h2>
 	<ul>
@@ -211,7 +218,8 @@
 <h2 align="middle">Contributions</h2>
 	<ul>
 		<li> Haw-Wei Lin: </li>
-		<li> Sheng-Yu Wang: </li>
+		<li> Sheng-Yu Wang: I worked on implementing the particle based fluid dynamics simulation pipeline besides rendering.
+		                    I also worked on the technical approach for the presentation slides and website writeup.</li>
 		<li> Vincent Chen: Presentation slides, website writeup, tensile instability</li>
 	</ul>	
 
