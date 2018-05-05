@@ -43,6 +43,10 @@
 
 <h2 align="middle">Abstract</h2>
     <p>For our final project, we've chosen to implement 3D real-time fluid simulation by treating fluid as a huge set of particles that interact with each other and move at various velocities. We started off with the "particles" CUDA sample, where only particle collisions are handled. In order to simulate fluid-like motion within the particles, we implemented methods described in [Macklin et al. 2013] to enforce incompressibility. We also handled tensile instability, and enforced other constraints such as vorticity and viscosity. We implemented these methods in CUDA for real-time effects. Finally, we attempted surface rendering in order to render the surface reflection, refraction and shading of a liquid.</p>
+
+<h2 align="middle">Final Project Video Link</h2> 
+    <p>Click the link below to watch the final project video with narration and an overview of our project.</p>
+    <a href="https://drive.google.com/open?id=1MZ32h-aWB4NcQJj4Y9CUT_AsF0v9f9HG">Watch Final Project Video</a>
     
 
 <h2 align="middle">Technical Approach</h2>
@@ -77,7 +81,7 @@
 	<img src="image/tensile-1.png" width="300px" align="middle" /> <br>
 	<img src="image/tensile-2.png" width="360px" align="middle" />
 
-	<p>In the above equation, ∆q is a random fixed distance within the smoothing kernel radius and k is a small constant. We've fine-tuned these parameters to produce the best visual effects. Since the correction term is purely negative, the above correction term is a purely repulsive force. As a result, each particle now pulls their neighboring particles inward, creating a surface-tension like effect, which further makes the simulation behave more like an actual fluid.</p>
+	<p>In the above equation, ∆q is a random fixed distance within the smoothing kernel radius and k is a small constant. We've fine-tuned these parameters to produce the best visual effects.</p>
 
 	<h3>Vorticity Confinement</h3>
     <p>The constraints applied so far are not physically correct, and unfortunately in this case our implementation will dissipate considerable energy. This generates a undesirable effect where the fluids are not moving enough. In order to add the energy back, we reinforce the local vorticity of the fluid. First, we calculate the current approximate of the local vorticity given as follows: <br>
@@ -198,7 +202,7 @@
         </table>
     </div>
 
-<h2>Challenges</h2>
+<h2 align="middle">Challenges</h2>
 <p>One of our major challenges in this project was debugging the CUDA code. Cuda device functions (functions with __device__ header) 
 were executed only in the gpu, and we were not able to print out variables in device functions. This causes some trouble to debug. 
 Thankfully, it is possible to actually use a pointer to store the variable and print it out in the host functions. After knowing that, 
@@ -208,7 +212,7 @@ to print out values in CUDA functions does not apply to OpenGL shaders, making i
 were able to solve some bugs by encoding certain values in the fragment color as clues. However, when the display code itself was also in 
 question, we were unfortunately unable to finish debugging.</p>
 
-<h2>Lessons Learned</h2>
+<h2 align="middle">Lessons Learned</h2>
 <p>The most important lesson we learned was probably the power of parallel processing on GPU. Simulating 3D point based fluids is definitely
 a hard task computational-wise. However, we're able to parallelize the dynamics calculation for each particle and achieve real-time simulation.
 This is super cool! After this project, we will definitely cherish a GPU much more when playing games.</p>
