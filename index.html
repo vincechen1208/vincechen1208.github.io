@@ -42,7 +42,7 @@
  </div>
 
 <h2 align="middle">Abstract</h2>
-    <p>For our final project, we've chosen to implement 3D real-time fluid simulation by treating fluid as a huge set of particles that interact with each other and move at various velocities. We started off with the "particles" CUDA sample, where only particle collisions are handled. In order to simulate fluid-like motion within the particles, we implemented methods described in [Macklin et al. 2013] to enforce incompressibility. We also handled tensile instability, and enforced other constraints such as vorticity and viscosity. We implemented these methods in CUDA for real-time effects. Finally, we attemped surface rendering in order to make the particles look more like a liquid.</p>
+    <p>For our final project, we've chosen to implement 3D real-time fluid simulation by treating fluid as a huge set of particles that interact with each other and move at various velocities. We started off with the "particles" CUDA sample, where only particle collisions are handled. In order to simulate fluid-like motion within the particles, we implemented methods described in [Macklin et al. 2013] to enforce incompressibility. We also handled tensile instability, and enforced other constraints such as vorticity and viscosity. We implemented these methods in CUDA for real-time effects. Finally, we attempted surface rendering in order to render the surface reflection, refraction and shading of a liquid.</p>
     
 
 <h2 align="middle">Technical Approach</h2>
@@ -50,7 +50,7 @@
 	<h3>Full Pipeline</h3>
     <img src="image/alg.png" width="400px" align="middle" /> 
     <h3>Incompressibility</h3>
-    <p>Instead of doing a physical calculation for the intermolecular attraction and repulsion. Here we adopted the constraint method to simulate a non-physical but realistic incompressibility effect. To formulate the constraint, we can leverage the fact that incompressibility implies constant local densities. First, we calculate the local densities for each particle in our scene, where particle <i><b>i</b></i> has a local density <i><b>ρi</b></i> approximated by the following: <br>
+    <p>Instead of performing a physical calculation for the intermolecular attraction and repulsion, here, we adopted the constraint method to simulate a non-physical but realistic incompressibility effect. To formulate the constraint, we can leverage the fact that incompressibility implies constant local densities. First, we calculate the local densities for each particle in our scene, where particle <i><b>i</b></i> has a local density <i><b>ρi</b></i> approximated by the following: <br>
         <img src="image/comp-1.png" width="200px" align="middle" />, where <i><b>ρ0</b></i> is the rest density we define. <br>
 
     With this approximation, we can set up a state function: <br>
